@@ -14,7 +14,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<app.runtime>4.6.1</app.runtime>
-		<mule.maven.plugin.version>4.1.0</mule.maven.plugin.version>
+		<mule.maven.plugin.version>4.1.1</mule.maven.plugin.version>
 	</properties>
 
 	<build>
@@ -31,7 +31,7 @@
 				<extensions>true</extensions>
 				
 				<configuration>
-					<cloudHub2Deployment>
+					<cloudhub2Deployment>
 						<uri>https://anypoint.mulesoft.com</uri>
 						<muleVersion>${app.runtime}</muleVersion>
 						<server>anypoint-exchange-v3</server>
@@ -51,7 +51,7 @@
 							</services>
 						</integrations>
 						<businessGroup>95557959-d0f3-44b5-b6a3-15b16cfdbd8a</businessGroup>
-					</cloudHub2Deployment>
+					</cloudhub2Deployment>
 					<classifier>mule-application</classifier>
 				</configuration>				
 			</plugin>
@@ -105,7 +105,7 @@
 	<distributionManagement>
 		<repository>
 			<id>anypoint-exchange-v3</id>
-			<name>JC Anypoint Exchange Repository</name>
+			<name>Anypoint Exchange Repository</name>
 			<url>https://maven.anypoint.mulesoft.com/api/v2/organizations/95557959-d0f3-44b5-b6a3-15b16cfdbd8a/maven</url>
 			<layout>default</layout>
 		</repository>
