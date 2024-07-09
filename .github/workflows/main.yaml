@@ -1,0 +1,71 @@
+name: Build and Deploy Workflow
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+
+env:
+   clientIdConnectedApp: ${{ secrets.COMMON_CONNECTEDAPP_CLIENTID }}
+   clientSecretConnectedApp: ${{ secrets.COMMON_CONNECTEDAPP_CLIENTSECRET }}
+
+
+jobs:    
+  buildAndDeploy:
+
+    runs-on: ubuntu-latest   
+
+    steps:
+
+    - uses: actions/checkout@v2       
+
+    - uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+   
+    - name: Setup Java JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: 17
+
+    - name: Build with Maven
+      run: mvn clean package -s .maven/settings.xml -DskipTests
+    
+    
+    - name: Stamp artifact file name with commit hash
+      run: |
+        artifactName1=$(ls target/*.jar | head -1)
+        commitHash=$(git rev-parse --short "$GITHUB_SHA")
+        artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
+        mv $artifactName1 $artifactName2
+    
+    - name: Upload artifact 
+      uses: actions/upload-artifact@master
+      with:
+          name: artifacts
+          path: target/*.jar 
+
+    - uses: actions/download-artifact@master
+      with:
+        name: artifacts
+              
+    - name: Upload to Exchange
+      run: |
+        artifactName=$(ls *.jar | head -1)
+        mvn clean deploy -s .maven/settings.xml -DskipTests -Dmule.artifact=$artifactName         
+            
+    - name: Deploy to Dev
+      run: |
+        artifactName=$(ls *.jar | head -1)
+        mvn deploy -DmuleDeploy \
+         -Dmule.artifact=$artifactName \
+         -s .maven/settings.xml \
+         -DskipTests
+
+      if: github.ref == 'refs/heads/main'

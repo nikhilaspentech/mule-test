@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.mycompany</groupId>
+	<groupId>95557959-d0f3-44b5-b6a3-15b16cfdbd8a</groupId>
 	<artifactId>mule-test</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
@@ -29,8 +29,35 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
+				
+				<configuration>
+					<cloudHub2Deployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<muleVersion>${app.runtime}</muleVersion>
+						<server>anypoint-exchange-v3</server>
+						<provider>MC</provider>
+						<target>ps-aspentech-common</target>
+						<connectedAppClientId>${clientIdConnectedApp}</connectedAppClientId>
+						<connectedAppClientSecret>${clientSecretConnectedApp}</connectedAppClientSecret>
+						<environment>Dev</environment>
+						<applicationName>mule-test</applicationName>
+						<replicas>1</replicas>
+						<vCores>0.1</vCores>
+						<integrations>
+							<services>
+								<objectStoreV2>
+									<enabled>true</enabled>
+								</objectStoreV2>
+							</services>
+						</integrations>
+						<businessGroup>95557959-d0f3-44b5-b6a3-15b16cfdbd8a</businessGroup>
+					</cloudHub2Deployment>
+					<classifier>mule-application</classifier>
+				</configuration>				
 			</plugin>
 		</plugins>
+		
+				
 	</build>
 
 	<dependencies>
@@ -74,5 +101,16 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+	
+	<distributionManagement>
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>JC Anypoint Exchange Repository</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v2/organizations/95557959-d0f3-44b5-b6a3-15b16cfdbd8a/maven</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
+
+
 
 </project>
