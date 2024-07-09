@@ -39,6 +39,7 @@
 						<target>ps-aspentech-common</target>
 						<connectedAppClientId>${clientIdConnectedApp}</connectedAppClientId>
 						<connectedAppClientSecret>${clientSecretConnectedApp}</connectedAppClientSecret>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType>
 						<environment>Dev</environment>
 						<applicationName>mule-test</applicationName>
 						<replicas>1</replicas>
